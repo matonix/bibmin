@@ -1,0 +1,38 @@
+name: bibmin-logic
+version: '0.1.0'
+category: Web
+author: maton
+maintainer: automatonix@gmail.com
+copyright: Haruki Yokoyama
+license: BSD3
+github: matonix/bibmin-logic
+
+dependencies:
+- base >=4.7 && <5
+- containers
+- text
+- megaparsec
+- parser-combinators
+ghc-options:
+- -Wall
+- -threaded
+- -rtsopts
+- -with-rtsopts=-N
+
+library:
+  source-dirs: src
+
+executables:
+  bibmin-logic:
+    main: Main.hs
+    source-dirs: app
+    dependencies:
+    - bibmin-logic
+
+tests:
+  bibmin-logic-test:
+    main: Spec.hs
+    source-dirs: test
+    dependencies:
+    - bibmin-logic
+    - hspec
