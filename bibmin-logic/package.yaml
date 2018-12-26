@@ -13,6 +13,8 @@ dependencies:
 - text
 - megaparsec
 - parser-combinators
+- data-default
+- prettyprinter
 ghc-options:
 - -Wall
 
