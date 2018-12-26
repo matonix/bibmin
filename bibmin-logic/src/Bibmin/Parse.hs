@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-} 
+{-# LANGUAGE OverloadedStrings #-}
 
 module Bibmin.Parse where
 
@@ -17,7 +17,7 @@ bibtexParser :: Parser [Bibtex]
 bibtexParser = between sc eof $ many bibtex
 
 bibtex :: Parser Bibtex
-bibtex = Bibtex <$ atmark 
+bibtex = Bibtex <$ atmark
   <*> entry <* lbrace
   <*> key <* comma
   <*> tags <* rbrace
@@ -31,22 +31,46 @@ entry = text entryString <?> "entry"
 key :: Parser Text
 key = text keyString <?> "key"
   where
-    keyString = (:) 
-      <$> C.alphaNumChar 
-      <*> many (C.satisfy $ (isAlphaNum ||| isPunctuation) &&& (/= ','))
+    keyString = (:) <$> C.alphaNumChar <*> many keyChar
+    keyChar = satisfy $ (isAlphaNum ||| isPunctuation) &&& isNot ','
 
 tags :: Parser [(Text, Text)]
 tags = sepBy1 tag comma <?> "tags"
 
 tag :: Parser (Text, Text)
-tag = (,) <$> text labelString <* equal <*> value <?> "tag"
+tag = (,) <$> text labelString <* equal <*> lexeme value <?> "tag"
   where
     labelString = some C.letterChar
 
 value :: Parser Text
-value = lexeme $ between dquote dquote valueString
+value = numberValue
+  <|> letterValue
+  <|> dquoteValue
+  <|> braceValue
+  <?> "value"
   where
-    valueString = T.pack <$> some (C.satisfy $ isPrint &&& (/= '\"'))
+    numberValue = text $ some C.numberChar
+    letterValue = text $ some C.letterChar
+    dquoteValue = between dquote dquote latexString
+    braceValue = between lbrace rbrace latexString
+
+latexString :: Parser Text
+latexString = T.concat <$> many (brace <|> bare)
+  where
+    brace = cat <$> single '{' <*> many latexSequence <*> single '}'
+      where
+        cat x y z =  x `T.cons` T.concat y `T.snoc` z
+    bare = T.concat <$> some latexSequence
+
+latexSequence :: Parser Text
+latexSequence = escapeSequence <|> latexChar
+  where
+    latexChar :: Parser Text
+    latexChar = T.singleton <$> satisfy (isPrint &&& isNoneOf "{}\"")
+    escapeSequence :: Parser Text
+    escapeSequence = cat <$> single '\\' <*> C.printChar
+      where
+        cat x y = T.pack [x, y]
 
 -- Combinators
 
@@ -62,7 +86,7 @@ symbol = L.symbol sc
 text :: Parser String -> Parser Text
 text p = T.pack <$> lexeme p
 
--- symbols
+-- Symbols
 
 atmark :: Parser Text
 atmark = symbol "@"
@@ -82,10 +106,18 @@ rbrace = symbol "}"
 dquote :: Parser Text
 dquote = symbol "\""
 
-(&&&) :: (a -> Bool) -> (a -> Bool) -> a -> Bool 
+-- Char region
+
+(&&&) :: (a -> Bool) -> (a -> Bool) -> a -> Bool
 (&&&) p q x = p x && q x
 infixr 3 &&&
 
 (|||) :: (a -> Bool) -> (a -> Bool) -> a -> Bool
-(|||) p q x = p x || q x 
+(|||) p q x = p x || q x
 infixr 2 |||
+
+isNot :: Char -> Char -> Bool
+isNot = (/=)
+
+isNoneOf :: String -> Char -> Bool
+isNoneOf = flip notElem

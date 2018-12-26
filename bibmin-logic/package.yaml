@@ -15,24 +15,18 @@ dependencies:
 - parser-combinators
 ghc-options:
 - -Wall
-- -threaded
-- -rtsopts
-- -with-rtsopts=-N
 
 library:
   source-dirs: src
 
-executables:
-  bibmin-logic:
-    main: Main.hs
-    source-dirs: app
-    dependencies:
-    - bibmin-logic
-
 tests:
   bibmin-logic-test:
-    main: Spec.hs
+    main: Driver.hs
     source-dirs: test
     dependencies:
     - bibmin-logic
-    - hspec
+    - tasty
+    - tasty-hunit
+    - tasty-golden
+    - tasty-discover
+    - filepath
