@@ -35,13 +35,13 @@ instance Pretty (PP Bibtex) where
       caseF = caseModifier labelCase . fromStrict
       sortF = sortFunction isSort
     in "@" <> pretty (caseF entry) <> braces (
-      pretty (caseF key) <> "," <> line 
+      pretty (caseF key) <> comma <> line 
       <> indent indentSize (vsep (
         punctuate comma (L.map prettyTag (sortF tags))))
       <> line)
     where
       prettyTag (label, value) = pretty label 
-        <+> "=" 
+        <+> equals
         <+> dquotes (pretty value)
 
 
