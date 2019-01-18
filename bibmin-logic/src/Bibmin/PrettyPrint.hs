@@ -31,18 +31,15 @@ instance Pretty (PP Bibtex) where
   pretty (PP 
     (PPConfig indentSize isSort labelCase) 
     (Bibtex entry key tags)) = 
-    let
+      "@" <> pretty (caseF entry) <> braces content
+    where
       caseF = caseModifier labelCase . fromStrict
       sortF = sortFunction isSort
-    in "@" <> pretty (caseF entry) <> braces (
-      pretty (caseF key) <> comma <> line 
-      <> indent indentSize (vsep (
-        punctuate comma (L.map prettyTag (sortF tags))))
-      <> line)
-    where
+      content = pretty (caseF key) <> comma <> line 
+        <> indent indentSize (prettyTags) <> line
+      prettyTags = vsep (punctuate comma (L.map prettyTag (sortF tags)))
       prettyTag (label, value) = pretty label 
-        <+> equals
-        <+> dquotes (pretty value)
+        <+> equals <+> dquotes (pretty value)
 
 
 caseModifier :: Case -> Text -> Text

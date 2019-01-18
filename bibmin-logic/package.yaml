@@ -31,4 +31,6 @@ tests:
     - tasty-hunit
     - tasty-golden
     - tasty-discover
+    - tasty-hedgehog
+    - hedgehog
     - filepath
