@@ -17,3 +17,8 @@ data Bibtex = Bibtex
   , tags  :: [(Text, Text)] -- ^ e.g. [("foo", "Mrs. Foo")]
   } deriving (Eq, Show)
 
+subBibtex :: [Text] -> BibTex -> BibTex
+subBibtex tagKeys bibtex = bibtex { tags = subTags tagKeys }
+
+subTags :: [Text] -> [(Text, Text)] -> [(Text, Text)]
+subTags tagKeys tags = filter (`elem` tags) tagKeys

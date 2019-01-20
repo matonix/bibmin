@@ -2,7 +2,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -Wno-name-shadowing #-}
 
-module Bibmin.PrettyPrint where
+module Bibmin.PrettyPrint
+  ( PPConfig (..)
+  , prettyPrint
+  ) where
 
 import Data.Text.Prettyprint.Doc
 import Data.Text.Prettyprint.Doc.Render.Text (renderLazy)
