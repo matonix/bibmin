@@ -1,6 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Bibmin.Parse where
+module Bibmin.Parse
+  ( bibtexFile
+  , bibtex
+  ) where
 
 import Text.Megaparsec
 import qualified Text.Megaparsec.Char as C
@@ -13,8 +16,8 @@ import Data.Char
 
 type Parser = Parsec Void Text
 
-bibtexParser :: Parser [Bibtex]
-bibtexParser = between sc eof $ many bibtex
+bibtexFile :: Parser [Bibtex]
+bibtexFile = between sc eof $ many bibtex
 
 bibtex :: Parser Bibtex
 bibtex = Bibtex <$ atmark

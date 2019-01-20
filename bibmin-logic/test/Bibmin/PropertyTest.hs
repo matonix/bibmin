@@ -19,7 +19,7 @@ test_property = testGroup "tasty-hedgehog tests"
       "parse is left inverse of pretty print" $
       property $ do
         x <- forAll genBibtex
-        leftInverse (parseMaybe bibtexParser) (prettyPrint def) x
+        leftInverse (parseMaybe bibtex) (prettyPrint def) x
         
   ]
   where
@@ -32,9 +32,9 @@ test_property = testGroup "tasty-hedgehog tests"
         genTextNonEmpty = pack <$> Gen.list (Range.linear 1 100) Gen.alpha
     
     leftInverse :: MonadTest m => 
-      (Text -> Maybe [Bibtex]) -> 
+      (Text -> Maybe Bibtex) -> 
       (Bibtex -> Lazy.Text) -> 
       Bibtex -> m ()
     leftInverse g f x =
-      g (Lazy.toStrict (f x)) === Just [x]
+      g (Lazy.toStrict (f x)) === Just x
     
