@@ -1,8 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Bibmin.Parse
-  ( bibtexFile
-  , bibtex
+  ( readBibtexFile
+  , parseBibtexFile
+  , parseBibtex
+  , parseBibtex'
   ) where
 
 import Text.Megaparsec
@@ -10,11 +12,28 @@ import qualified Text.Megaparsec.Char as C
 import qualified Text.Megaparsec.Char.Lexer as L
 import Data.Text (Text)
 import qualified Data.Text as T
+import qualified Data.Text.IO as T
 import Data.Void (Void)
 import Bibmin.Bibtex (Bibtex(Bibtex)) -- use constructor only
 import Data.Char
 
 type Parser = Parsec Void Text
+
+readBibtexFile :: FilePath -> IO [Bibtex]
+readBibtexFile path = do
+  text <- T.readFile path
+  case (parseBibtexFile text) of
+    Nothing -> fail "readBibtexFile"
+    Just bibs -> return bibs
+
+parseBibtexFile :: Text -> Maybe [Bibtex]
+parseBibtexFile = parseMaybe bibtexFile
+
+parseBibtex :: Text -> Maybe Bibtex
+parseBibtex = parseMaybe bibtex
+
+parseBibtex' :: Text -> Either (ParseErrorBundle Text Void) Bibtex
+parseBibtex' = parse bibtex ""
 
 bibtexFile :: Parser [Bibtex]
 bibtexFile = between sc eof $ many bibtex

@@ -8,10 +8,8 @@ import qualified Hedgehog.Range as Range
 import Bibmin.PrettyPrint
 import Bibmin.Bibtex
 import Bibmin.Parse
-import Data.Default
 import Data.Text (Text, pack)
 import qualified Data.Text.Lazy as Lazy
-import Text.Megaparsec
 
 test_property :: TestTree
 test_property = testGroup "tasty-hedgehog tests"
@@ -19,7 +17,7 @@ test_property = testGroup "tasty-hedgehog tests"
       "parse is left inverse of pretty print" $
       property $ do
         x <- forAll genBibtex
-        leftInverse (parseMaybe bibtex) (prettyPrint def) x
+        leftInverse parseBibtex prettyPrintDef x
         
   ]
   where

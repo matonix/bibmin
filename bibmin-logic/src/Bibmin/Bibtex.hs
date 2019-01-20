@@ -1,4 +1,7 @@
-module Bibmin.Bibtex where
+module Bibmin.Bibtex
+  ( Bibtex(..)
+  -- , subBibtex
+  ) where
 
 -- | 
 -- This module includes data type of BibTeX
@@ -17,8 +20,7 @@ data Bibtex = Bibtex
   , tags  :: [(Text, Text)] -- ^ e.g. [("foo", "Mrs. Foo")]
   } deriving (Eq, Show)
 
-subBibtex :: [Text] -> BibTex -> BibTex
-subBibtex tagKeys bibtex = bibtex { tags = subTags tagKeys }
-
-subTags :: [Text] -> [(Text, Text)] -> [(Text, Text)]
-subTags tagKeys tags = filter (`elem` tags) tagKeys
+-- subBibtex :: [Text] -> Bibtex -> Bibtex
+-- subBibtex tagKeys bibtex = bibtex { tags = subTags tagKeys }
+--   where
+--     subTags tagKeys tags = filter (`elem` tags) tagKeys
