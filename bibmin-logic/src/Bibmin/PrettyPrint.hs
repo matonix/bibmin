@@ -4,10 +4,9 @@
 
 module Bibmin.PrettyPrint
   ( PPConfig (..)
-  , prettyPrintFileDef
   , prettyPrintFile
-  , prettyPrintDef
   , prettyPrint
+  , def
   ) where
 
 import Bibmin.Bibtex
@@ -49,17 +48,11 @@ instance Pretty (PP Bibtex) where
         <+> equals <+> dquotes (pretty value)
 -- 
 
-prettyPrintFileDef :: [Bibtex] -> Text
-prettyPrintFileDef = prettyPrintFile def
-
 prettyPrintFile :: PPConfig -> [Bibtex] -> Text
 prettyPrintFile ppconfig bibs = T.unlines 
   . L.intersperse ""
   $ L.map (prettyPrint ppconfig) bibs
-
-prettyPrintDef :: Bibtex -> Text
-prettyPrintDef = prettyPrint def
-        
+     
 prettyPrint :: PPConfig -> Bibtex -> Text
 prettyPrint ppconfig bibtex = renderLazy 
   . layoutPretty defaultLayoutOptions 

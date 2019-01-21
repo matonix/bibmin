@@ -1,6 +1,6 @@
 module Bibmin.Bibtex
   ( Bibtex(..)
-  -- , subBibtex
+  , subBibtex
   ) where
 
 -- | 
@@ -20,7 +20,7 @@ data Bibtex = Bibtex
   , tags  :: [(Text, Text)] -- ^ e.g. [("foo", "Mrs. Foo")]
   } deriving (Eq, Show)
 
--- subBibtex :: [Text] -> Bibtex -> Bibtex
--- subBibtex tagKeys bibtex = bibtex { tags = subTags tagKeys }
---   where
---     subTags tagKeys tags = filter (`elem` tags) tagKeys
+subBibtex :: [Text] -> Bibtex -> Bibtex
+subBibtex tagKeys bibtex = bibtex { tags = subTags tagKeys (tags bibtex) }
+  where
+    subTags tagKeys tags = filter ((`elem` tagKeys) . fst) tags
