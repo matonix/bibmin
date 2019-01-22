@@ -6,7 +6,6 @@ import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.HUnit
 import Bibmin.PrettyPrint
 import Bibmin.Bibtex
-import Data.Default
 
 test_unitTests :: TestTree
 test_unitTests = testGroup "prettyPrint" 

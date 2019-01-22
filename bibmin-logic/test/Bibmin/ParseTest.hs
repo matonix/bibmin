@@ -5,11 +5,8 @@ module Bibmin.ParseTest where
 
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.HUnit
--- import Test.Tasty.Golden (goldenVsString, findByExtension)
--- import System.FilePath (takeBaseName, replaceExtension)
 import Bibmin.Parse
 import Bibmin.Bibtex
-import Text.Megaparsec
 
 
 test_unitTests :: TestTree
@@ -45,9 +42,3 @@ test_unitTests = testGroup "bibtex"
       parseBibtex' "@article { cage, title = \"4\\\'33\\\"\" }"
         @?= Right (Bibtex "article" "cage" [("title", "4\\\'33\\\"")])
   ]
-
--- goldenTests :: IO TestTree
--- goldenTests = do
---   bibtexFiles <- findByExtension [".bib"] "."
---   return $ testGroup "Bibmin.Parse.bibtex golden tests"
---     [ goldenVsString (takeBaseName) FilePath IO ByteString ]
