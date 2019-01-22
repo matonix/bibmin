@@ -4,6 +4,7 @@
 
 module Bibmin.PrettyPrint
   ( PPConfig (..)
+  , writeBibtexFile
   , prettyPrintFile
   , prettyPrint
   , def
@@ -13,6 +14,7 @@ import Bibmin.Bibtex
 import Data.Default
 import Data.Text.Prettyprint.Doc
 import Data.Text.Prettyprint.Doc.Render.Text (renderLazy)
+import qualified Data.Text.Lazy.IO as T
 import qualified Data.Text.Lazy as T
 import Data.Text.Lazy (Text)
 import qualified Data.List as L
@@ -47,6 +49,10 @@ instance Pretty (PP Bibtex) where
       prettyTag (label, value) = pretty label 
         <+> equals <+> dquotes (pretty value)
 -- 
+
+writeBibtexFile :: PPConfig -> FilePath -> [Bibtex] -> IO ()
+writeBibtexFile ppconfig path bibs =
+  T.writeFile path $ prettyPrintFile ppconfig bibs
 
 prettyPrintFile :: PPConfig -> [Bibtex] -> Text
 prettyPrintFile ppconfig bibs = T.unlines 
