@@ -4,6 +4,7 @@
 
 module Bibmin.PrettyPrint
   ( PPConfig (..)
+  , Case(..)
   , writeBibtexFile
   , prettyPrintFile
   , prettyPrint
