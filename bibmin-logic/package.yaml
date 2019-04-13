@@ -15,6 +15,7 @@ dependencies:
 - parser-combinators
 - data-default
 - prettyprinter
+- scotty
 ghc-options:
 - -Wall
 

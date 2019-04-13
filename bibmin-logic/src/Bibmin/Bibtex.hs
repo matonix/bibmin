@@ -23,4 +23,4 @@ data Bibtex = Bibtex
 subBibtex :: [Text] -> Bibtex -> Bibtex
 subBibtex tagKeys bibtex = bibtex { tags = subTags tagKeys (tags bibtex) }
   where
-    subTags tagKeys tags = filter ((`elem` tagKeys) . fst) tags
+    subTags tagKeys' = filter ((`elem` tagKeys') . fst)

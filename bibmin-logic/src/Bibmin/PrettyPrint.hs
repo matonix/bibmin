@@ -4,6 +4,7 @@
 
 module Bibmin.PrettyPrint
   ( PPConfig (..)
+  , Case(..)
   , writeBibtexFile
   , prettyPrintFile
   , prettyPrint
@@ -18,6 +19,7 @@ import qualified Data.Text.Lazy.IO as T
 import qualified Data.Text.Lazy as T
 import Data.Text.Lazy (Text)
 import qualified Data.List as L
+import Web.Scotty
 
 data PP a = PP PPConfig a
 
@@ -35,6 +37,16 @@ data Case = None | Lower | Upper | Title deriving (Show)
 instance Default Case where
   def = None
 
+instance Parsable Case where
+  parseParam t
+    | t' == T.toCaseFold "none" = Right None
+    | t' == T.toCaseFold "lower" = Right Lower
+    | t' == T.toCaseFold "upper" = Right Upper
+    | t' == T.toCaseFold "title" = Right Title
+    | otherwise = Left "parseParam Case: no parse"
+    where
+      t' = T.toCaseFold t
+
 instance Pretty (PP Bibtex) where
   pretty (PP 
     (PPConfig indentSize isSort labelCase) 
@@ -44,7 +56,7 @@ instance Pretty (PP Bibtex) where
       caseF = caseModifier labelCase . T.fromStrict
       sortF = sortFunction isSort
       content = pretty (caseF key) <> comma <> line 
-        <> indent indentSize (prettyTags) <> line
+        <> indent indentSize prettyTags <> line
       prettyTags = vsep (punctuate comma (L.map prettyTag (sortF tags)))
       prettyTag (label, value) = pretty label 
         <+> equals <+> dquotes (pretty value)
