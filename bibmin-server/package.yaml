@@ -1,0 +1,35 @@
+name: bibmin-server
+version: '0.1.0'
+category: Web
+author: maton
+maintainer: automatonix@gmail.com
+copyright: Haruki Yokoyama
+license: BSD3
+github: matonix/bibmin-server
+
+dependencies:
+- base >=4.7 && <5
+ghc-options:
+- -Wall
+- -threaded
+- -rtsopts
+- -with-rtsopts=-N
+
+executables:
+  bibmin-server:
+    main: Main.hs
+    source-dirs: app
+    dependencies:
+    - bibmin-logic
+    - aeson
+    - http-types
+    - mtl
+    - scotty
+    - text
+
+tests:
+  bibmin-server-test:
+    main: Spec.hs
+    source-dirs: test
+    dependencies:
+    - hspec
