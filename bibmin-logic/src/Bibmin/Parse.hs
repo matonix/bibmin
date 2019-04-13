@@ -16,15 +16,14 @@ import qualified Data.Text.IO as T
 import Data.Void (Void)
 import Bibmin.Bibtex (Bibtex(Bibtex)) -- use constructor only
 import Data.Char
+import Data.Maybe
 
 type Parser = Parsec Void Text
 
 readBibtexFile :: FilePath -> IO [Bibtex]
 readBibtexFile path = do
-  text <- T.readFile path
-  case (parseBibtexFile text) of
-    Nothing -> fail "readBibtexFile"
-    Just bibs -> return bibs
+  content <- T.readFile path
+  return $ fromMaybe (fail "readBibtexFile") $ parseBibtexFile content
 
 parseBibtexFile :: Text -> Maybe [Bibtex]
 parseBibtexFile = parseMaybe bibtexFile

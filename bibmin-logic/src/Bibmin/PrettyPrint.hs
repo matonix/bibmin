@@ -44,7 +44,7 @@ instance Pretty (PP Bibtex) where
       caseF = caseModifier labelCase . T.fromStrict
       sortF = sortFunction isSort
       content = pretty (caseF key) <> comma <> line 
-        <> indent indentSize (prettyTags) <> line
+        <> indent indentSize prettyTags <> line
       prettyTags = vsep (punctuate comma (L.map prettyTag (sortF tags)))
       prettyTag (label, value) = pretty label 
         <+> equals <+> dquotes (pretty value)
