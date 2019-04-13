@@ -7,10 +7,12 @@ import Data.Default
 import Web.Scotty
 import Bibmin.Parse
 import Bibmin.PrettyPrint
+import System.Environment
 
 main :: IO ()
-main =
-  scotty 8080 $ do
+main = do
+  port <- getPort <$> getArgs
+  scotty port $ do
     get "/" $ text "usage: POST /bibmin with bibtex=\"your bibtex\""
     post "/bibmin" $ do
       bibtex <- param "bibtex"
@@ -23,3 +25,7 @@ main =
           <$> param "indent_size" `rescue` const (return def)
           <*> param "is_sort" `rescue` const (return False)
           <*> param "label_case" `rescue` const (return def)
+
+getPort :: [String] -> Int
+getPort [] = 8080
+getPort (x:_) = read x
