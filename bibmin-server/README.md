@@ -1,6 +1,8 @@
 # bibmin-server
 
-## query
+## sample
+
+### query
 ```
 curl -X POST -d bibtex='@misc{ patashnik-bibtexing,
   author = "Oren Patashnik",
@@ -9,7 +11,7 @@ curl -X POST -d bibtex='@misc{ patashnik-bibtexing,
 
 ```
 
-## response
+### response
 ```
 HTTP/1.1 200 OK
 Transfer-Encoding: chunked
@@ -23,3 +25,29 @@ title = "BIBTEXing",
 year = "1988"
 }⏎
 ```
+
+## sample2
+
+### query
+```
+curl -X POST -d bibtex='@misc{ patashnik-bibtexing,
+  author = "Oren Patashnik",
+  title = "BIBTEXing",
+  year = "1988",
+  misc = "blah" }' \
+  -d indent_size=2 \
+  -d is_sort='true' \
+  -d label_case='Title' \
+  http://localhost:8080/bibmin
+```
+
+### response2
+```
+@Misc{Patashnik-bibtexing,
+  author = "Oren Patashnik",
+  misc = "blah",
+  title = "BIBTEXing",
+  year = "1988"
+}
+```
+

@@ -26,6 +26,7 @@ executables:
     - mtl
     - scotty
     - text
+    - data-default
 
 tests:
   bibmin-server-test:
