@@ -1,0 +1,18 @@
+resolver: lts-13.4
+packages:
+  - .
+  - ../bibmin-logic
+extra-deps:
+  - git: https://github.com/tonatona-project/tonatona
+    commit: bc916ac3bd633075950ac8976282aa7b5c02da4e
+    subdirs:
+      - tonalude
+      - tonaparser
+      - tonatona
+      - tonatona-logger
+      - tonatona-persistent-postgresql
+      - tonatona-persistent-sqlite
+      - tonatona-servant
+
+flags: {}
+extra-package-dbs: []
