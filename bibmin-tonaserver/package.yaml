@@ -36,6 +36,7 @@ dependencies:
 - servant-server
 - aeson
 - http-api-data
+- megaparsec
 default-extensions:
 - AutoDeriveTypeable
 - BangPatterns

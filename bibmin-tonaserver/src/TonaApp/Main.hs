@@ -8,6 +8,7 @@ import Tonatona (HasConfig(..), HasParser(..))
 import qualified Tonatona.Logger as TonaLogger
 import qualified Tonatona.Servant as TonaServer
 import Servant
+import Text.Megaparsec
 
 import TonaApp.BibminAPI
 import Bibmin.Parse
@@ -32,7 +33,7 @@ server = getBibmin :<|> postBibmin
   where
     getBibmin = return $ MattermostResponse "usage: POST \"your bibtex content\" "
     postBibmin (MattermostRequest bib) = return $ case parseBibtex' bib of
-      Left err -> MattermostResponse $ utf8BuilderToText $ displayShow err
+      Left err -> MattermostResponse $ utf8BuilderToText $ displayShow $ errorBundlePretty err
       Right bib' -> MattermostResponse $ textDisplay $ prettyPrint def' bib'
       where
         def' = def { indentSize = 2 }
