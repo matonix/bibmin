@@ -35,6 +35,7 @@ dependencies:
 - servant
 - servant-server
 - aeson
+- http-api-data
 default-extensions:
 - AutoDeriveTypeable
 - BangPatterns

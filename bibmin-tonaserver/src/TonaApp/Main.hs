@@ -27,8 +27,8 @@ app = do
 server :: ServerT BibminAPI (RIO Config)
 server = getBibmin :<|> postBibmin
   where
-    getBibmin = return $ Mattermost "usage"
-    postBibmin bib = return $ Mattermost bib
+    getBibmin = return $ MattermostResponse "usage"
+    postBibmin (MattermostRequest bib) = return $ MattermostResponse bib
 
 
 -- Config
