@@ -20,6 +20,10 @@ app = do
   TonaLogger.logDebug $ display ("Start server" :: Text)
   TonaServer.run @BibminAPI server
 
+
+-- Implementation of server
+
+
 server :: ServerT BibminAPI (RIO Config)
 server = getBibmin :<|> postBibmin
   where

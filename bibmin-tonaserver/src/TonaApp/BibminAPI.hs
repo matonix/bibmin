@@ -11,7 +11,8 @@ import Data.Aeson
 import GHC.Generics ()
 
 -- | /bibmin?bibtex='@misc{ ... }'
-type BibminAPI = "bibmin" :> Get '[JSON] Mattermost 
+type BibminAPI =
+         "bibmin" :> Get '[JSON] Mattermost 
     :<|> "bibmin" :> ReqBody '[JSON] Text :> Post '[JSON] Mattermost
 
 -- | Response data
