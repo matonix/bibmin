@@ -10,6 +10,9 @@ import qualified Tonatona.Servant as TonaServer
 import Servant
 
 import TonaApp.BibminAPI
+import Bibmin.Parse
+import Bibmin.PrettyPrint
+
 
 -- App
 
@@ -27,8 +30,12 @@ app = do
 server :: ServerT BibminAPI (RIO Config)
 server = getBibmin :<|> postBibmin
   where
-    getBibmin = return $ MattermostResponse "usage"
-    postBibmin (MattermostRequest bib) = return $ MattermostResponse bib
+    getBibmin = return $ MattermostResponse "usage: POST \"your bibtex content\" "
+    postBibmin (MattermostRequest bib) = return $ case parseBibtex' bib of
+      Left err -> MattermostResponse $ utf8BuilderToText $ displayShow err
+      Right bib' -> MattermostResponse $ textDisplay $ prettyPrint def' bib'
+      where
+        def' = def { indentSize = 2 }
 
 
 -- Config
