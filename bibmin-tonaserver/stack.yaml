@@ -13,6 +13,8 @@ extra-deps:
       - tonatona-persistent-postgresql
       - tonatona-persistent-sqlite
       - tonatona-servant
+  - tasty-hedgehog-0.2.0.0
+  - hedgehog-0.6.1
 
 flags: {}
 extra-package-dbs: []

@@ -30,20 +30,25 @@ app = do
 
 server :: ServerT BibminAPI (RIO Config)
 server = getBibmin :<|> postBibmin
-  where
-    getBibmin :: RIO Config MattermostResponse
-    getBibmin = return $ MattermostResponse "post your bibtex content!"
 
-    postBibmin :: MattermostRequest -> RIO Config MattermostResponse
-    postBibmin (MattermostRequest bib) = 
-        return $ MattermostResponse $ case parseBibtex' bib of
-          Left err -> 
-            triquote . utf8BuilderToText . fromString $ errorBundlePretty err
-          Right bib' -> 
-            triquote . textDisplay $ prettyPrint def' bib'
-          where
-            def' = def { indentSize = 2 }
-            triquote body = "```\n" <> body <> "\n```"
+getBibmin :: RIO Config MattermostResponse
+getBibmin = return 
+  $ MattermostResponse "pong!"
+
+postBibmin :: MattermostRequest -> RIO Config MattermostResponse
+postBibmin (MattermostRequest bib) = return 
+  . MattermostResponse 
+  $ case parseBibtex' bib of
+    Left err -> triquote 
+      . utf8BuilderToText 
+      . fromString 
+      $ errorBundlePretty err
+    Right bib' -> triquote 
+      . textDisplay 
+      $ prettyPrint def' bib'
+    where
+      def' = def { indentSize = 2 }
+      triquote body = "```\n" <> body <> "\n```"
 
 
 -- Config

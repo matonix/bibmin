@@ -19,7 +19,9 @@ type BibminAPI =
          "bibmin" :> Get '[JSON] MattermostResponse 
     :<|> "bibmin" :> ReqBody '[FormUrlEncoded] MattermostRequest :> Post '[JSON] MattermostResponse
 
+
 -- Request data
+
 
 data MattermostRequest = MattermostRequest
     { text :: Text 
@@ -29,6 +31,7 @@ instance FromForm MattermostRequest
 
 
 -- Response data
+
 
 data MattermostResponse = MattermostResponse
     { text :: Text
