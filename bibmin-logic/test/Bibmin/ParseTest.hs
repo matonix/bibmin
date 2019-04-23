@@ -41,4 +41,7 @@ test_unitTests = testGroup "bibtex"
   , testCase "parses escape-char-value bibtex" $
       parseBibtex' "@article { cage, title = \"4\\\'33\\\"\" }"
         @?= Right (Bibtex "article" "cage" [("title", "4\\\'33\\\"")])
+  , testCase "parses trailing-comma bibtex" $
+      parseBibtex' "@article { citation-key, foo = \"Mrs. Foo\", }"
+        @?= Right (Bibtex "article" "citation-key" [("foo", "Mrs. Foo")])
   ]

@@ -56,7 +56,7 @@ key = text keyString <?> "key"
     keyChar = satisfy $ (isAlphaNum ||| isPunctuation) &&& isNot ','
 
 tags :: Parser [(Text, Text)]
-tags = sepBy1 tag comma <?> "tags"
+tags = sepEndBy1 tag comma <?> "tags"
 
 tag :: Parser (Text, Text)
 tag = (,) <$> text labelString <* equal <*> lexeme value <?> "tag"
