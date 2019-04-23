@@ -31,10 +31,13 @@ app = do
 server :: ServerT BibminAPI (RIO Config)
 server = getBibmin :<|> postBibmin
   where
-    getBibmin = return $ MattermostResponse "usage: POST \"your bibtex content\" "
-    postBibmin (MattermostRequest bib) = return $ case parseBibtex' bib of
-      Left err -> MattermostResponse $ utf8BuilderToText $ displayShow $ errorBundlePretty err
-      Right bib' -> MattermostResponse $ textDisplay $ prettyPrint def' bib'
+    getBibmin :: RIO Config MattermostResponse
+    getBibmin = return $ MattermostResponse "post your bibtex content!"
+
+    postBibmin :: MattermostRequest -> RIO Config MattermostResponse
+    postBibmin (MattermostRequest bib) = return $ MattermostResponse $ case parseBibtex' bib of
+      Left err -> utf8BuilderToText $ fromString $ errorBundlePretty err
+      Right bib' -> textDisplay $ prettyPrint def' bib'
       where
         def' = def { indentSize = 2 }
 
