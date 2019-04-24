@@ -1,0 +1,21 @@
+format:
+  indentSize: 2
+  isSort: false
+  labelCase: lower
+tags:
+  - entry: inproceedings
+    tagKeys:
+      - title
+      - author
+      - booktitle
+      - pages
+      - year
+  - entry: article
+    tagKeys:
+      - title
+      - author
+      - journal
+      - volume
+      - number
+      - pages
+      - year

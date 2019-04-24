@@ -16,6 +16,7 @@ dependencies:
 - data-default
 - prettyprinter
 - scotty
+- aeson
 ghc-options:
 - -Wall
 

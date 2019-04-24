@@ -11,6 +11,7 @@ import Servant
 import Text.Megaparsec
 
 import TonaApp.BibminAPI
+import qualified TonaApp.Config as C
 import Bibmin.Parse
 import Bibmin.PrettyPrint
 
@@ -32,23 +33,28 @@ server :: ServerT BibminAPI (RIO Config)
 server = getBibmin :<|> postBibmin
 
 getBibmin :: RIO Config MattermostResponse
-getBibmin = return 
+getBibmin =
+  return 
   $ MattermostResponse "pong!"
 
 postBibmin :: MattermostRequest -> RIO Config MattermostResponse
-postBibmin (MattermostRequest bib) = return 
-  . MattermostResponse 
-  $ case parseBibtex' bib of
-    Left err -> triquote 
-      . utf8BuilderToText 
-      . fromString 
-      $ errorBundlePretty err
-    Right bib' -> triquote 
-      . textDisplay 
-      $ prettyPrint def' bib'
-    where
-      def' = def { indentSize = 2 }
-      triquote body = "```\n" <> body <> "\n```"
+postBibmin (MattermostRequest bib) = case parseBibtex' bib of
+  Left err -> return 
+    . MattermostResponse 
+    . triquote 
+    . utf8BuilderToText 
+    . fromString 
+    $ errorBundlePretty err
+  Right bib' -> return 
+    . MattermostResponse 
+    . triquote 
+    . textDisplay 
+    . prettyPrint def' 
+    $ C.transform tags bib'
+  where
+    tags = C.tags C.defaultConfig
+    def' = C.toPPConfig $ C.format C.defaultConfig
+    triquote body = "```\n" <> body <> "\n```"
 
 
 -- Config

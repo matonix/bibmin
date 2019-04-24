@@ -9,6 +9,8 @@ module Bibmin.PrettyPrint
   , prettyPrintFile
   , prettyPrint
   , def
+  , parseCase
+  , parseCaseOrDefault
   ) where
 
 import Bibmin.Bibtex
@@ -38,14 +40,7 @@ instance Default Case where
   def = None
 
 instance Parsable Case where
-  parseParam t
-    | t' == T.toCaseFold "none" = Right None
-    | t' == T.toCaseFold "lower" = Right Lower
-    | t' == T.toCaseFold "upper" = Right Upper
-    | t' == T.toCaseFold "title" = Right Title
-    | otherwise = Left "parseParam Case: no parse"
-    where
-      t' = T.toCaseFold t
+  parseParam = parseCase
 
 instance Pretty (PP Bibtex) where
   pretty (PP 
@@ -86,3 +81,18 @@ caseModifier Title = T.toTitle
 sortFunction :: Ord a => Bool -> [a] -> [a]
 sortFunction False = id
 sortFunction True = L.sort
+
+parseCase :: Text -> Either Text Case
+parseCase t
+  | t' == T.toCaseFold "none" = Right None
+  | t' == T.toCaseFold "lower" = Right Lower
+  | t' == T.toCaseFold "upper" = Right Upper
+  | t' == T.toCaseFold "title" = Right Title
+  | otherwise = Left "parseParam Case: no parse"
+  where
+    t' = T.toCaseFold t
+
+parseCaseOrDefault :: Text -> Case
+parseCaseOrDefault t = case parseCase t of
+  Left _ -> def
+  Right c -> c 

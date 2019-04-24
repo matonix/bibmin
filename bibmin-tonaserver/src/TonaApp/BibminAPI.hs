@@ -16,16 +16,16 @@ import Web.FormUrlEncoded
 
 
 type BibminAPI =
-         "bibmin" :> Get '[JSON] MattermostResponse 
-    :<|> "bibmin" :> ReqBody '[FormUrlEncoded] MattermostRequest :> Post '[JSON] MattermostResponse
+       "bibmin" :> Get '[JSON] MattermostResponse 
+  :<|> "bibmin" :> ReqBody '[FormUrlEncoded] MattermostRequest :> Post '[JSON] MattermostResponse
 
 
 -- Request data
 
 
 data MattermostRequest = MattermostRequest
-    { text :: Text 
-    } deriving (Generic)
+  { text :: Text 
+  } deriving (Generic)
 
 instance FromForm MattermostRequest
 
@@ -34,8 +34,8 @@ instance FromForm MattermostRequest
 
 
 data MattermostResponse = MattermostResponse
-    { text :: Text
-    } deriving (Generic, ToJSON)
+  { text :: Text
+  } deriving (Generic, ToJSON)
 
 
 -- Boilerplate of servant
