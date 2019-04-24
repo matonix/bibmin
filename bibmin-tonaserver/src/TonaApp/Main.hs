@@ -35,18 +35,18 @@ server = getBibmin :<|> postBibmin
 getBibmin :: RIO Config MattermostResponse
 getBibmin =
   return 
-  $ MattermostResponse "pong!"
+  $ MattermostResponse "in_channel" "pong!"
 
 postBibmin :: MattermostRequest -> RIO Config MattermostResponse
 postBibmin (MattermostRequest bib) = case parseBibtex' bib of
   Left err -> return 
-    . MattermostResponse 
+    . MattermostResponse "in_channel"
     . triquote 
     . utf8BuilderToText 
     . fromString 
     $ errorBundlePretty err
   Right bib' -> return 
-    . MattermostResponse 
+    . MattermostResponse "in_channel"
     . triquote 
     . textDisplay 
     . prettyPrint def' 

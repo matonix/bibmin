@@ -34,7 +34,8 @@ instance FromForm MattermostRequest
 
 
 data MattermostResponse = MattermostResponse
-  { text :: Text
+  { response_type :: Text
+  , text :: Text
   } deriving (Generic, ToJSON)
 
 
