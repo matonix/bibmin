@@ -44,4 +44,7 @@ test_unitTests = testGroup "bibtex"
   , testCase "parses trailing-comma bibtex" $
       parseBibtex' "@article { citation-key, foo = \"Mrs. Foo\", }"
         @?= Right (Bibtex "article" "citation-key" [("foo", "Mrs. Foo")])
+  , testCase "parses extra-space bibtex" $
+      parseBibtex' "@article { citation-key, foo = \" Mrs. Foo \", }"
+        @?= Right (Bibtex "article" "citation-key" [("foo", "Mrs. Foo")])
   ]

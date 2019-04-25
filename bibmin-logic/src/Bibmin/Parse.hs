@@ -76,9 +76,9 @@ value = numberValue
     braceValue = between lbrace rbrace latexString
 
 latexString :: Parser Text
-latexString = T.concat <$> many (brace <|> bare)
+latexString = T.strip . T.concat <$> many (braced <|> bare)
   where
-    brace = cat <$> single '{' <*> many latexSequence <*> single '}'
+    braced = cat <$> single '{' <*> many latexSequence <*> single '}'
       where
         cat x y z =  x `T.cons` T.concat y `T.snoc` z
     bare = T.concat <$> some latexSequence
